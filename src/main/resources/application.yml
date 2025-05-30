@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: forex-service
+  cache:
+    type: simple
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:fxdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+currencylayer:
+  access-key: d1b8630ad0f3e1118fd8f35ecbe6a062
+  base-url: http://api.currencylayer.com
+
+server:
+  port: 8080
+
+retry:
+  processing:
+    rate-ms: 4000
+    initial-delay-ms: 5000
+
