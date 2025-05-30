@@ -1,4 +1,4 @@
-package com.forexservice.data.dto;
+package com.forexservice.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

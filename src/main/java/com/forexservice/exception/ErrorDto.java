@@ -1,4 +1,4 @@
-package com.forexservice.data.dto;
+package com.forexservice.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
