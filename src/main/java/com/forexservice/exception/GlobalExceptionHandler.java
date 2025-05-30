@@ -1,8 +1,5 @@
-package com.forexservice.data.dto;
+package com.forexservice.exception;
 
-import com.forexservice.exception.CsvProcessingException;
-import com.forexservice.exception.ExchangeRateException;
-import com.forexservice.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
