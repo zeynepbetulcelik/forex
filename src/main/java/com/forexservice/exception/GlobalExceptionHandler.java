@@ -1,17 +1,11 @@
 package com.forexservice.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -39,15 +33,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ViolationErrorResponse> handleViolationExceptions(MethodArgumentNotValidException e) {
-        ViolationErrorResponse response = new ViolationErrorResponse();
-        response.setErrorDetails(ErrorCode.VALIDATION_ERROR.toErrorDetails());
-        response.setViolations(e.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> new Violation(
-                        fieldError.getField(),
-                        fieldError.getDefaultMessage()))
-                .toList());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    public ResponseEntity<ErrorDto> handleViolationExceptions(MethodArgumentNotValidException e) {
+        final String validationErrors = e.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .reduce("", (a, b) -> a + "; " + b);
+
+        final ErrorDto err = new ErrorDto(ErrorCode.VALIDATION_ERROR.toErrorDetails(), validationErrors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
     @ExceptionHandler(CsvProcessingException.class)
@@ -55,21 +47,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleCsvProcessingException(CsvProcessingException e) {
         final ErrorDto err = new ErrorDto(ErrorCode.CSV_PROCESSING_ERROR.toErrorDetails(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Violation {
-        String field;
-        String message;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ViolationErrorResponse {
-        List<Violation> violations = new ArrayList<>();
-        ErrorDetails errorDetails;
     }
 
 }
