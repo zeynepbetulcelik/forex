@@ -20,6 +20,7 @@ This project is designed with extensibility in mind and showcases common pattern
 ### Prerequisites
 
 - Java 21
+- Maven
 - Docker
   
 ### Build and Run with Docker Compose
@@ -27,7 +28,7 @@ This project is designed with extensibility in mind and showcases common pattern
 First, build the project locally:
 
 ```bash
-mvn clean install
+mvn clean package
 ```
 
 Then run the application with Docker Compose:
