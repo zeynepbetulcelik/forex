@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.stream.Collectors;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -36,7 +38,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleViolationExceptions(MethodArgumentNotValidException e) {
         final String validationErrors = e.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
-                .reduce("", (a, b) -> a + "; " + b);
+                .collect(Collectors.joining("; "));
 
         final ErrorDto err = new ErrorDto(ErrorCode.VALIDATION_ERROR.toErrorDetails(), validationErrors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
