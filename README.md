@@ -21,11 +21,20 @@ This project is designed with extensibility in mind and showcases common pattern
 
 - Java 21
 - Docker
+  
+### Build and Run with Docker Compose
 
-### Start with Docker Compose
+First, build the project locally:
 
 ```bash
-docker-compose up
+mvn clean install
+```
+
+Then run the application with Docker Compose:
+
+```bash
+docker compose up --build
+
 ```
 
 This will start:
